@@ -7,16 +7,27 @@ namespace Ticketing
 {
     public class TicketPrice
     {
+        //Changed to enum discType - MG
+        public enum discType
+        {
+            None,
+            SeniorStudent,
+            ChildLess12
+        }
+
         private int section;
         private int quantity;
-        private bool discount;
+        //Changed to enum discType - MG
+        private discType discount;
         private decimal amountDue;
         private decimal mPrice;
 
         const decimal mdecBalcony = 35.5m;
         const decimal mdecGeneral = 28.75m;
         const decimal mdecBox = 62.0m;
-        const decimal mdecDiscount = 5.0m; 
+        const decimal mdecDiscount = 5.0m;
+        //added child discount - MG
+        const decimal mdecChildDiscount = 10.0m;
 
         private int Section
         {
@@ -24,53 +35,64 @@ namespace Ticketing
             set { section = value; }
         }
 
-         private int Quantity
+        private int Quantity
         {
             get { return quantity; }
             set { quantity = value; }
         }
 
-         private bool Discount
+        private discType Discount
         {
             get { return discount; }
             set { discount = value; }
         }
 
-         public decimal AmountDue
+        public decimal AmountDue
         {
             get { return amountDue; }
             set { amountDue = value; }
         }
 
-    // Constructor for TcicketPrice
-    public TicketPrice(int section, int quantity, bool discount)
-    {
-        Section = section;
-        Quantity = quantity;
-        Discount = discount;
-        AmountDue = amountDue;
-    }
+        // Constructor for TcicketPrice
+        //Changed to enum discType - MG
+        public TicketPrice(int section, int quantity, discType discount)
+        {
+            Section = section;
+            Quantity = quantity;
+            Discount = discount;
+            AmountDue = amountDue;
+        }
 
-     public void calculatePrice()
-     {
+        public void calculatePrice()
+        {
 
-         switch (section)
-         {
-             case 1:
-                 mPrice = mdecBalcony;
-                 break;
-             case 2:
-                 mPrice = mdecGeneral;
-                 break;
-             case 3:
-                 mPrice = mdecBox;
-                 break;
-         }
-         if (discount)
-         { mPrice -= mdecDiscount; }
+            switch (section)
+            {
+                case 1:
+                    mPrice = mdecBalcony;
+                    break;
+                case 2:
+                    mPrice = mdecGeneral;
+                    break;
+                case 3:
+                    mPrice = mdecBox;
+                    break;
+            }
 
-         AmountDue = mPrice * quantity;
+            //Changed to enum discType - MG
+            switch (discount)
+            {
+                case discType.ChildLess12:
+                    mPrice -= mdecChildDiscount;
+                    break;
 
-     }
+                case discType.SeniorStudent:
+                    mPrice -= mdecDiscount;
+                    break;
+            }
+
+            AmountDue = mPrice * quantity;
+
+        }
     }
 }
