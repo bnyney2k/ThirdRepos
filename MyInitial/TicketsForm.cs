@@ -14,7 +14,7 @@ namespace Ticketing
         TicketPrice mTicketPrice;
         int mSection = 2;
         int mQuantity = 0;
-        bool mDiscount = false;
+        TicketPrice.discType mDiscount = TicketPrice.discType.None;
 
         public TicketsForm()
         {
@@ -31,7 +31,13 @@ namespace Ticketing
             mQuantity = int.Parse(txtQuantity.Text);
 
             if (chkDiscount.Checked)
-                { mDiscount = true; }
+            { 
+                mDiscount = TicketPrice.discType.SeniorStudent; 
+            }
+            else if (chkChild.Checked)
+            {
+                mDiscount = TicketPrice.discType.ChildLess12;
+            }
 
             if (radBalcony.Checked)
                 { mSection = 1; }

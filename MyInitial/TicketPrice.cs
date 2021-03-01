@@ -7,9 +7,18 @@ namespace Ticketing
 {
     public class TicketPrice
     {
+        //Changed to enum discType - MG
+        public enum discType
+        {
+            None,
+            SeniorStudent,
+            ChildLess12
+        }
+
         private int section;
         private int quantity;
-        private bool discount;
+        //Changed to enum discType - MG
+        private discType discount;
         private decimal amountDue;
         private decimal mPrice;
 
@@ -18,42 +27,44 @@ namespace Ticketing
         const decimal mdecBox = 62.0m;
         const decimal mdecDiscount = 5.0m;
         const decimal mdecBack = 15.0m;
+        //added child discount - MG
+        const decimal mdecChildDiscount = 10.0m;
 
         private int Section
         {
             get { return section; }
             set { section = value; }
         }
-
-         private int Quantity
+        private int Quantity
         {
             get { return quantity; }
             set { quantity = value; }
         }
 
-         private bool Discount
+        private discType Discount
         {
             get { return discount; }
             set { discount = value; }
         }
 
-         public decimal AmountDue
+        public decimal AmountDue
         {
             get { return amountDue; }
             set { amountDue = value; }
         }
 
-    // Constructor for TcicketPrice
-    public TicketPrice(int section, int quantity, bool discount)
-    {
-        Section = section;
-        Quantity = quantity;
-        Discount = discount;
-        AmountDue = amountDue;
-    }
+        // Constructor for TcicketPrice
+        //Changed to enum discType - MG
+        public TicketPrice(int section, int quantity, discType discount)
+        {
+            Section = section;
+            Quantity = quantity;
+            Discount = discount;
+            AmountDue = amountDue;
+        }
 
-     public void calculatePrice()
-     {
+        public void calculatePrice()
+        {
 
          switch (section)
          {
@@ -70,11 +81,20 @@ namespace Ticketing
                     mPrice = mdecBack;
                     break;
          }
-         if (discount)
-         { mPrice -= mdecDiscount; }
+            //Changed to enum discType - MG
+            switch (discount)
+            {
+                case discType.ChildLess12:
+                    mPrice -= mdecChildDiscount;
+                    break;
 
-         AmountDue = mPrice * quantity;
+                case discType.SeniorStudent:
+                    mPrice -= mdecDiscount;
+                    break;
+            }
 
-     }
+            AmountDue = mPrice * quantity;
+
+        }
     }
 }
